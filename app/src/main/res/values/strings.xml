@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Road Advisor</string>
+    <string name="title_activity_main_menu">Current Status</string>
+
+    //---- LOGIN SCREEN
+
+    <string name="login_signin_text">Sign In</string>
+    <string name="login_email_placeholder">Your email here</string>
+    <string name="login_password_placeholder">Password</string>
+    <string name="login_forgetpsw_text">Forgot your password?</string>
+    <string name="login_register_text">Register Me!</string>
+
+    //---- MAIN MENU
+
+    <string name="options_settings_text">Settings</string>
+    <string name="options_signout_text">Sign Out</string>
+
+    //---- REGISTER FORM
+
+    <string name="register_fullname_placeholder">Full Name</string>
+    <string name="register_email_placeholder">Email</string>
+    <string name="register_psw1_placeholder">Password</string>
+    <string name="register_psw2_placeholder">Retry Password</string>
+    <string name="register_tyc_text">I have read and agree to the </string>
+    <string name="register_tycLink_text">Terms and Conditions</string>
+    <string name="register_submitButton_text">Create me an Account!</string>
+
+    //---- FORM ERROR MESSAGES
+
+    <string name="form_errMsg_required">Required</string>
+    <string name="form_errMsg_fullname_format">Wrong full name format</string>
+    <string name="form_errMsg_email_format">Wrong Email format</string>
+    <string name="form_errMsg_psw1_format">Wrong password format</string>
+    <string name="form_errMsg_psw2_match">Password does not match previous one</string>
+    <string name="form_errMsg_tyc_required">Must read and agree Terms and Conditions in order to create an account</string>
+    <string name="form_errMsg_wrongLogin">Wrong email or password...</string>
+
+</resources>
