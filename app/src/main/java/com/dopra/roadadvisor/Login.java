@@ -30,8 +30,6 @@ public class Login extends AppCompatActivity {
 
     //TODO: Hide keyboard when Sign In button is pressed
 
-    //TODO: Commit the changes 07/06/2017 0:54am
-
     //Declare a TAG for Log Messages
     private static final String TAG = "LoginActivity";
 
