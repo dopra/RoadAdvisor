@@ -28,8 +28,6 @@ import java.util.regex.Pattern;
 
 public class Login extends AppCompatActivity {
 
-    //TODO: Hide keyboard when Sign In button is pressed
-
     //Declare a TAG for Log Messages
     private static final String TAG = "LoginActivity";
 
@@ -120,8 +118,6 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
-        //TODO: WHY IS SET isLogged AS FALSE AGAIN?
 
         if (authStateListener != null) {
             auth.removeAuthStateListener(authStateListener);

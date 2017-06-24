@@ -42,11 +42,8 @@ public class MainMenu extends AppCompatActivity {
         DatabaseReference cac_roadConditionRef = rootRef.child("cac_roadCondition");
 
 
-//--- Firebase Remote Config
+//--- UI Elements
 
-    private FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
-
-    //--- UI Elements
     TextView cdc_roadCondition_textView;
     Button cdc_open_button;
     Button cdc_closed_button;
@@ -57,46 +54,13 @@ public class MainMenu extends AppCompatActivity {
     
     Toolbar toolbar;
 
-    Boolean isAdminProfile;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainmenu);
 
-        FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
-        analytics.setUserId(auth.getCurrentUser().getUid());
-
-        remoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .build());
-
-        HashMap<String, Object> defaults = new HashMap<>();
-        defaults.put("is_user_admin", true);
-        remoteConfig.setDefaults(defaults);
-
-        final Task<Void> fetch = remoteConfig.fetch(0);
-        fetch.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                remoteConfig.activateFetched();
-                updateUI();
-            }
-        });
-
-        //--- Get UI elements
-        cdc_roadCondition_textView = (TextView)findViewById(R.id.cdc_textView_condition);
-        cdc_open_button = (Button)findViewById(R.id.cdc_button_open);
-        cdc_closed_button = (Button)findViewById(R.id.cdc_button_close);
-
-        cac_roadCondition_textView = (TextView)findViewById(R.id.cac_textView_condition);
-        cac_open_button = (Button)findViewById(R.id.cac_button_open);
-        cac_closed_button = (Button)findViewById(R.id.cac_button_close);
-        
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+        // Initialize User Interface
+        init_UI();
     }
 
     @Override
@@ -113,12 +77,12 @@ public class MainMenu extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        //--- Seetings Action
         if (id == R.id.action_settings) {
             return true;
         }
 
-        //noinspection SimplifiableIfStatement
+        //--- Logout Action
         if (id == R.id.action_logout) {
 
             auth.signOut();
@@ -154,19 +118,6 @@ public class MainMenu extends AppCompatActivity {
             }
         });
 
-        cdc_open_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cdc_roadConditionRef.setValue("ABIERTO");
-            }
-        });
-
-        cdc_closed_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cdc_roadConditionRef.setValue("CERRADO");
-            }
-        });
 
 //------ CAMINO DE LAS ALTAS CUMBRES -------
 
@@ -188,6 +139,25 @@ public class MainMenu extends AppCompatActivity {
             }
         });
 
+    }
+
+
+//--- AUXILIAR FUNCTIONS
+
+    private void init_UI() {
+
+        //--- Get UI elements
+        cdc_roadCondition_textView = (TextView)findViewById(R.id.cdc_textView_condition);
+        cdc_open_button = (Button)findViewById(R.id.cdc_button_open);
+        cdc_closed_button = (Button)findViewById(R.id.cdc_button_close);
+
+        cac_roadCondition_textView = (TextView)findViewById(R.id.cac_textView_condition);
+        cac_open_button = (Button)findViewById(R.id.cac_button_open);
+        cac_closed_button = (Button)findViewById(R.id.cac_button_close);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         cac_open_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,21 +171,23 @@ public class MainMenu extends AppCompatActivity {
                 cac_roadConditionRef.setValue("CERRADO");
             }
         });
+
+        cdc_open_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cdc_roadConditionRef.setValue("ABIERTO");
+            }
+        });
+
+        cdc_closed_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cdc_roadConditionRef.setValue("CERRADO");
+            }
+        });
+
     }
 
-    private void updateUI() {
-
-        isAdminProfile = remoteConfig.getBoolean("is_user_admin");
-
-        if (!isAdminProfile) {
-
-            cdc_open_button.setVisibility(View.INVISIBLE);
-            cdc_closed_button.setVisibility(View.INVISIBLE);
-            cac_open_button.setVisibility(View.INVISIBLE);
-            cac_closed_button.setVisibility(View.INVISIBLE);
-
-        }
-    }
 }
 
 

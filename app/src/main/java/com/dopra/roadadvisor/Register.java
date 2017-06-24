@@ -31,8 +31,6 @@ import java.util.regex.Pattern;
 
 public class Register extends AppCompatActivity {
 
-    //TODO: El correo para verificar la cuenta no se manda a la primera, hay que reenviarlo
-
     //Declare a TAG for Log Messages
     private static final String TAG = "RegisterActivity";
 
@@ -127,7 +125,6 @@ public class Register extends AppCompatActivity {
 
                 else {
 
-                    //TODO: La actualización de perfil funcionó una sola vez. Hay que ver que pasa porque ni debuggeando lo pude ver...
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -404,8 +401,6 @@ public class Register extends AppCompatActivity {
 
             //If all inputs were valid
             createAccount(reg_email.getText().toString(), reg_psw1.getText().toString());
-
-            //TODO: Generate Account, Update Profile
 
         }
     }
