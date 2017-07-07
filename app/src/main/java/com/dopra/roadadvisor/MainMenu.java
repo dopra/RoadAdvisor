@@ -3,6 +3,7 @@ package com.dopra.roadadvisor;
 //USER VERSION
 
 import android.content.Intent;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +34,7 @@ public class MainMenu extends AppCompatActivity {
         //We're creating a "cdc_roadCondition" location under the rootRef
         DatabaseReference cdc_roadConditionRef = rootRef.child("cdc_roadCondition");
 
-        //We're creating a "cdc_roadCondition" location under the rootRef
+        //We're creating a "cac_roadCondition" location under the rootRef
         DatabaseReference cac_roadConditionRef = rootRef.child("cac_roadCondition");
 
 
@@ -44,7 +47,13 @@ public class MainMenu extends AppCompatActivity {
     TextView cac_roadCondition_textView;
     Button cac_open_button;
     Button cac_closed_button;
-    
+
+    ProgressBar cdc_spinner;
+    ProgressBar cac_spinner;
+
+    ImageView cdc_background;
+    ImageView cac_background;
+
     Toolbar toolbar;
 
     @Override
@@ -55,6 +64,8 @@ public class MainMenu extends AppCompatActivity {
         // Initialize User Interface
         init_UI();
     }
+
+//------ ToolBar Configuration -------
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,16 +102,29 @@ public class MainMenu extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-//------- CAMINO DEL CUADRADO --------
+        //------- CAMINO DEL CUADRADO --------
 
         //--- This will be triggered each time that the "roadCondition" changes
         cdc_roadConditionRef.addValueEventListener(new ValueEventListener() {
-
             //--- For success
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String prev_status = cdc_roadCondition_textView.getText().toString();
                 String status = dataSnapshot.getValue(String.class);
+                cdc_spinner.setVisibility(View.GONE);
                 cdc_roadCondition_textView.setText(status);
+                cdc_roadCondition_textView.setVisibility(View.VISIBLE);
+
+                // This will change the background to Black and White
+                if (status.equals("CERRADO") && prev_status.equals("ABIERTO")){
+                    ((TransitionDrawable) cdc_background.getDrawable()).startTransition(1000);
+                }
+
+                // This will change back the background to color
+                else if (status.equals("ABIERTO") && prev_status.equals("CERRADO")) {
+                    ((TransitionDrawable) cdc_background.getDrawable()).reverseTransition(1000);
+                }
             }
 
 
@@ -112,7 +136,7 @@ public class MainMenu extends AppCompatActivity {
         });
 
 
-//------ CAMINO DE LAS ALTAS CUMBRES -------
+        //------ CAMINO DE LAS ALTAS CUMBRES -------
 
         //--- This will be triggered each time that the "roadCondition" changes
         cac_roadConditionRef.addValueEventListener(new ValueEventListener() {
@@ -120,8 +144,22 @@ public class MainMenu extends AppCompatActivity {
             //--- For success
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String prev_status = cac_roadCondition_textView.getText().toString();
                 String status = dataSnapshot.getValue(String.class);
+                cac_spinner.setVisibility(View.GONE);
                 cac_roadCondition_textView.setText(status);
+                cac_roadCondition_textView.setVisibility(View.VISIBLE);
+
+                // This will change the background to Black and White
+                if (status.equals("CERRADO") && prev_status.equals("ABIERTO")){
+                    ((TransitionDrawable) cac_background.getDrawable()).startTransition(1000);
+                }
+
+                // This will change back the background to color
+                else if (status.equals("ABIERTO")  && prev_status.equals("CERRADO")) {
+                    ((TransitionDrawable) cac_background.getDrawable()).reverseTransition(1000);
+                }
             }
 
 
@@ -141,12 +179,18 @@ public class MainMenu extends AppCompatActivity {
 
         //--- Get UI elements
         cdc_roadCondition_textView = (TextView)findViewById(R.id.cdc_textView_condition);
+        cdc_roadCondition_textView.setVisibility(View.GONE);
         cdc_open_button = (Button)findViewById(R.id.cdc_button_open);
         cdc_closed_button = (Button)findViewById(R.id.cdc_button_close);
+        cdc_spinner = (ProgressBar) findViewById(R.id.progressBar_cdc);
+        cdc_background = (ImageView) findViewById(R.id.cdc_background_iv);
 
         cac_roadCondition_textView = (TextView)findViewById(R.id.cac_textView_condition);
+        cac_roadCondition_textView.setVisibility(View.GONE);
         cac_open_button = (Button)findViewById(R.id.cac_button_open);
         cac_closed_button = (Button)findViewById(R.id.cac_button_close);
+        cac_spinner = (ProgressBar) findViewById(R.id.progressBar_cac);
+        cac_background = (ImageView) findViewById(R.id.cac_background_iv);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

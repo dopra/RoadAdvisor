@@ -81,7 +81,7 @@ public class Register extends AppCompatActivity {
 
                             //GO TO MAIN MENU ACTIVITY!
                             startActivity(new Intent(Register.this, Login.class));
-                            Toast.makeText(Register.this, "Already registered, please go back to Login screen", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Register.this, "@string/register_alreadyRegistered_text", Toast.LENGTH_LONG).show();
 
                         } else {
 
@@ -119,7 +119,7 @@ public class Register extends AppCompatActivity {
                     hideProgressDialog();
 
                     //Shows a message to the user
-                    Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "Already registered, please go back to Login screen", Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "@string/register_alreadyRegistered_text", Snackbar.LENGTH_LONG);
                     snackbar.show();
 
                     auth.signOut();

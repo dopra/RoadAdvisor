@@ -14,6 +14,10 @@
 
     <string name="options_settings_text">Settings</string>
     <string name="options_signout_text">Sign Out</string>
+    <string name="admin_openRoad">Open</string>
+    <string name="admin_closeRoad">Closed</string>
+    <string name="main_roadStatus_open">OPEN</string>
+    <string name="main_roadStatus_closed">CLOSED</string>
 
     //---- REGISTER FORM
 
@@ -24,6 +28,7 @@
     <string name="register_tyc_text">I have read and agree to the </string>
     <string name="register_tycLink_text">Terms and Conditions</string>
     <string name="register_submitButton_text">Create me an Account!</string>
+    <string name="register_alreadyRegistered_text">Already registered, please go back to Login screen</string>
 
     //---- FORM ERROR MESSAGES
 

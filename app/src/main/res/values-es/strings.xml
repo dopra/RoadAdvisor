@@ -23,4 +23,9 @@
     <string name="form_errMsg_required">Requerido</string>
     <string name="form_errMsg_tyc_required">Debes leer y aceptar los terminos y condiciones para poder crear una cuenta</string>
     <string name="form_errMsg_wrongLogin">Email o contraseña incorrectos...</string>
+    <string name="register_alreadyRegistered_text">Ya estás registrado! Vuelve a la pantalla de Inicio de Sesión</string>
+    <string name="admin_closeRoad">Cerrar</string>
+    <string name="admin_openRoad">Abrir</string>
+    <string name="main_roadStatus_closed">CERRADO</string>
+    <string name="main_roadStatus_open">ABIERTO</string>
 </resources>
