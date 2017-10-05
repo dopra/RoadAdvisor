@@ -76,7 +76,7 @@ public class Login extends AppCompatActivity {
                 //Is the user NOT Logged?
                 if (!isLogged) {
 
-                    //Is different than null?
+                    //Is user different than null?
                     if (user != null) {
 
                         //The account was verified?
@@ -202,7 +202,7 @@ public class Login extends AppCompatActivity {
                     //Clear the password field on an error
                     passwordField.setText("");
 
-                    //Shows a message to the user
+                    //Shows an error message to the user
                     Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), form_errMsg_wrongLogin, Snackbar.LENGTH_SHORT);
                     snackbar.show();
                 }
@@ -247,6 +247,7 @@ public class Login extends AppCompatActivity {
 
 //----- AUX FUNCTIONS
 
+    //Initialize User Interface
     private void init_UI() {
 
         // ---- Initialize Error Messages
@@ -287,14 +288,15 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    //Shows Register Activity when new account is pressed
     public void goToRegister(View view) {
 
         //Shows Register Activity
         startActivity(new Intent(Login.this, Register.class));
 
-        //createAccount(emailField.getText().toString(), passwordField.getText().toString());
     }
 
+    //Validate inputs, if all is good call signIn function
     public void signInAction(View view) {
 
         //Hides the keyboard when Sign In button is pressed
@@ -345,24 +347,27 @@ public class Login extends AppCompatActivity {
         }
 
         else {
+
             //If all inputs were valid
             signIn(emailField.getText().toString(), passwordField.getText().toString());
         }
 
     }
 
+    //Send an email with a link to reset password
     public void resetPassword(View view) {
 
         resetPassword(emailField.getText().toString());
     }
 
+    //Shows a message if the account was not verified yet
     public void showVerifyDialog(Boolean isRegistered) {
 
         // 1. Instantiate an AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
 
         // 2. Configure the Alert Dialog
-        builder.setMessage("Enviamos un correo a tu cuenta, por favor verifica tu correo");
+        builder.setMessage("@string/login_verfifyYourEmail_text");
 
         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             @Override
@@ -374,7 +379,7 @@ public class Login extends AppCompatActivity {
         });
 
         if (isRegistered) {
-            builder.setPositiveButton("Reenviar", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("@string/login_verfifyYourEmail_sendItAgain", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     auth.getCurrentUser().sendEmailVerification();

@@ -7,6 +7,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainMenu extends AppCompatActivity {
 
@@ -28,14 +32,18 @@ public class MainMenu extends AppCompatActivity {
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        //This will give us a reference to the root in JSON DB
+        // This will give us a reference to the root in RT Database
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
-        //We're creating a "cdc_roadCondition" location under the rootRef
+        // Creates "cdc_roadCondition" location under the rootRef
         DatabaseReference cdc_roadConditionRef = rootRef.child("cdc_roadCondition");
 
-        //We're creating a "cac_roadCondition" location under the rootRef
+        // Creates "cac_roadCondition" location under the rootRef
         DatabaseReference cac_roadConditionRef = rootRef.child("cac_roadCondition");
+
+        // Creates "users" location under the rootRef
+        DatabaseReference usersRef = rootRef.child("users");
+
 
 
 //--- UI Elements
@@ -56,6 +64,16 @@ public class MainMenu extends AppCompatActivity {
 
     Toolbar toolbar;
 
+
+//--- TAGS
+
+    private final String CDC_TAG = "CDC Update --> ";
+    private final String CAC_TAG = "CAC Update --> ";
+    private final String UID = "UID --> ";
+    private final String DEVICE = "deviceToken --> ";
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,50 +81,31 @@ public class MainMenu extends AppCompatActivity {
 
         // Initialize User Interface
         init_UI();
-    }
 
-//------ ToolBar Configuration -------
+        // Creates a reference to the UID under "users" location
+        DatabaseReference uidRef = usersRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+        // Creates "deviceToken" location under the UID
+        DatabaseReference deviceTokenRef = uidRef.child("deviceToken");
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        // Update the value of the deviceToken
+        deviceTokenRef.setValue(FirebaseInstanceId.getInstance().getToken().toString());
 
-        //--- Seetings Action
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        //--- Logout Action
-        if (id == R.id.action_logout) {
-
-            auth.signOut();
-            startActivity(new Intent(MainMenu.this, Login.class));
-            finish();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        // Logs
+        Log.d(UID, FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Log.d(DEVICE, FirebaseInstanceId.getInstance().getToken().toString());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        //------- CAMINO DEL CUADRADO --------
+    //------- CAMINO DEL CUADRADO --------
 
         //--- This will be triggered each time that the "roadCondition" changes
         cdc_roadConditionRef.addValueEventListener(new ValueEventListener() {
-            //--- For success
+
+            //--- If success
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -128,15 +127,15 @@ public class MainMenu extends AppCompatActivity {
             }
 
 
-            //--- For the errors
+            //--- For Errors
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.e(CDC_TAG, databaseError.getDetails());
             }
         });
 
 
-        //------ CAMINO DE LAS ALTAS CUMBRES -------
+    //------ CAMINO DE LAS ALTAS CUMBRES -------
 
         //--- This will be triggered each time that the "roadCondition" changes
         cac_roadConditionRef.addValueEventListener(new ValueEventListener() {
@@ -166,7 +165,7 @@ public class MainMenu extends AppCompatActivity {
             //--- For the errors
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.e(CAC_TAG, databaseError.getDetails());
             }
         });
 
@@ -229,6 +228,37 @@ public class MainMenu extends AppCompatActivity {
         cac_open_button.setVisibility(View.INVISIBLE);
         cac_closed_button.setVisibility(View.INVISIBLE);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //--- Seetings Action
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        //--- Logout Action
+        if (id == R.id.action_logout) {
+
+            auth.signOut();
+            startActivity(new Intent(MainMenu.this, Login.class));
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

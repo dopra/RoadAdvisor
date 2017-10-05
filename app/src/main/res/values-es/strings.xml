@@ -28,4 +28,6 @@
     <string name="admin_openRoad">Abrir</string>
     <string name="main_roadStatus_closed">CERRADO</string>
     <string name="main_roadStatus_open">ABIERTO</string>
+    <string name="login_verfifyYourEmail_sendItAgain">Reenviar</string>
+    <string name="login_verfifyYourEmail_text">Te hemos enviado un correo, hechale un vistaso para verificar tu cuenta</string>
 </resources>

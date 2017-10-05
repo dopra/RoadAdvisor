@@ -53,7 +53,6 @@ public class Register extends AppCompatActivity {
 
     public ProgressDialog progressDialog;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

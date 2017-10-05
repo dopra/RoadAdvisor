@@ -9,6 +9,8 @@
     <string name="login_password_placeholder">Password</string>
     <string name="login_forgetpsw_text">Forgot your password?</string>
     <string name="login_register_text">Register Me!</string>
+    <string name="login_verfifyYourEmail_text">We sent you an email, please check it in order to verify your account</string>
+    <string name="login_verfifyYourEmail_sendItAgain">Resend</string>
 
     //---- MAIN MENU
 
